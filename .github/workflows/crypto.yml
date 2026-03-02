@@ -5,6 +5,9 @@ on:
     - cron: '*/15 * * * *'  # Runs every 15 minutes
   workflow_dispatch:  # ✅ Enables manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   get_and_upload_crypto_data:
     runs-on: ubuntu-latest
@@ -30,3 +33,14 @@ jobs:
       run: |
         python crypto.py
       continue-on-error: true
+
+    - name: Update and commit crypto.py
+      run: |
+        # Add or update a timestamp comment at top of file
+        sed -i "1s|^# Last run:.*|# Last run: $(date -u)|; 1t; 1i # Last run: $(date -u)" crypto.py
+
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add crypto.py
+        git commit -m "Auto update search.py timestamp [skip ci]" || echo "No changes"
+        git push
