@@ -32,7 +32,6 @@ jobs:
     - name: Run crypto
       run: |
         python crypto.py
-      continue-on-error: true
 
     - name: Update and commit crypto.py
       run: |
