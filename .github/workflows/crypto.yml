@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # ✅ Enables manual trigger
 
 concurrency:
-  group: request-coingecko
+  group: request-crypto-cg
   cancel-in-progress: false
 
 permissions:
