@@ -86,7 +86,7 @@ bigdata['price_usd'] = bigdata['price_usd'].astype(str)
 # Define Table ID
 table_id = f"data-storage-485106.investing.crypto_{table_suffix}"
 
-if now.day == 1: 
+if now.day == 1 or now.day == 2: 
 
     # Check if current month table already has current month data
     try:
