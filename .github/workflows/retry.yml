@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Re-dispatch the failed workflow
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
         run: |
           gh workflow run "Flaky Job" \
             --repo ${{ github.repository }} \
