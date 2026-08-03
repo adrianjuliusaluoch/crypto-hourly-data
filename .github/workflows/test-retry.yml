@@ -1,8 +1,6 @@
-name: Test Retry Behaviour
-
+name: Test Retry Behaviour (In-Step)
 on:
-  workflow_dispatch:  # manual trigger only, won't run on any schedule
-
+  workflow_dispatch:
 jobs:
   test_retry:
     runs-on: ubuntu-latest
