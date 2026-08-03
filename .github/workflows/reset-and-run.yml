@@ -1,0 +1,22 @@
+name: Reset Counter And Run Flaky Job
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  reset_and_trigger:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
+    steps:
+      - name: Reset retry counter to 0
+        run: gh variable set RETRY_COUNT --repo ${{ github.repository }} --body 0
+
+      - name: Trigger Flaky Job
+        run: |
+          gh workflow run "Flaky Job" \
+            --repo ${{ github.repository }} \
+            --ref ${{ github.ref_name }}
