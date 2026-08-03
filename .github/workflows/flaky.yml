@@ -1,0 +1,17 @@
+name: Flaky Job
+on:
+  workflow_dispatch:
+jobs:
+  flaky_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail on odd run numbers, succeed on even
+        run: |
+          echo "This is run number ${{ github.run_number }}"
+          if [ $(( ${{ github.run_number }} % 2 )) -ne 0 ]; then
+            echo "Simulating a failure"
+            exit 1
+          else
+            echo "Succeeding now"
+            exit 0
+          fi
