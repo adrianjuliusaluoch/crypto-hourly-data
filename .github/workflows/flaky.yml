@@ -5,13 +5,13 @@ jobs:
   flaky_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Fail on odd run numbers, succeed on even
-        run: |
-          echo "This is run number ${{ github.run_number }}"
-          if [ $(( ${{ github.run_number }} % 2 )) -ne 0 ]; then
-            echo "Simulating a failure"
+      - name: Attempt task with internal retries
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          retry_wait_seconds: 5
+          retry_on: error
+          command: |
+            echo "Forced failure for testing the retry ceiling"
             exit 1
-          else
-            echo "Succeeding now"
-            exit 0
-          fi
