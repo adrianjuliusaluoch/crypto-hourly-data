@@ -10,7 +10,7 @@ on:
     # workflow in THIS repo that you want auto-retried.
     # Must match the `name:` field at the top of each workflow
     # file exactly (not the filename).
-    workflows: ["Workflow Name One", "Workflow Name Two"]
+    workflows: ["Request Crypto Data From CoinGecko"]
     types: [completed]
 
 permissions:
