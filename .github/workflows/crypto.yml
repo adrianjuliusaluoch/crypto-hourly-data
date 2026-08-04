@@ -1,11 +1,15 @@
 name: Request Crypto Data From CoinGecko
+
 on:
   workflow_dispatch:
+  
 concurrency:
   group: request-crypto-cg
   cancel-in-progress: false
+  
 permissions:
   contents: write
+  
 jobs:
   get_and_upload_crypto_data:
     runs-on: ubuntu-latest
@@ -13,16 +17,20 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3  # Updated to v3
+      
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
+        
     - name: Install dependencies
       run: pip install -r requirements.txt
+      
     - name: Set up Google Cloud credentials
       uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
+        
     - name: Run crypto
       uses: nick-fields/retry@v3
       with:
@@ -31,6 +39,7 @@ jobs:
         retry_wait_seconds: 15
         retry_on: error
         command: python crypto.py
+
     - name: Update and commit crypto.py
       run: |
         # Add or update a timestamp comment at top of file
@@ -41,4 +50,5 @@ jobs:
         git commit -m "Keep workflow alive [skip ci]" || echo "No changes to commit"
         git pull --rebase origin main
         git push
+        
       continue-on-error: true
