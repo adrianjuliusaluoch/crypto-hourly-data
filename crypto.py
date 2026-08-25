@@ -70,8 +70,8 @@ def fetch_crypto_data():
     df["price_usd"] = df["price_usd"].map("${:,.2f}".format)
     df["market_cap"] = df["market_cap"].map("${:,.0f}".format)
     df["vol_24h"] = df["vol_24h"].map("${:,.2f}".format)
-    df["chg_24h"] = df["chg_24h"].map("{:+.2f}%".format)
-    df["chg_7d"] = df["chg_7d"].map("{:+.2f}%".format)
+    df["chg_24h"] = df["chg_24h"].map(lambda x: f"{x:+.2f}%" if pd.notna(x) else "N/A")
+    df["chg_7d"] = df["chg_7d"].map(lambda x: f"{x:+.2f}%" if pd.notna(x) else "N/A")
     df["total_vol"] = df["total_vol"].map("{:.2f}%".format)
 
     return df
