@@ -177,27 +177,6 @@ data.drop_duplicates(subset=[
     'chg_7d', 
     'market_cap'], inplace=True)
 
-# ── ONE-TIME CLEANUP — remove this block after this run ──────────────────────
-# Early runs pulled the top 50 coins per hour before this was scaled back to
-# the top 10. This trims every past snapshot down to just its top 10 by market
-# cap, so the whole table is consistent with what the pipeline collects now.
-# market_cap is stored as a formatted string (e.g. "$1,234,567"), so it needs
-# to be parsed back to a number just to rank within each timestamp.
-_market_cap_num = pd.to_numeric(
-    data['market_cap'].str.replace('$', '', regex=False).str.replace(',', '', regex=False),
-    errors='coerce'
-)
-before_rows = len(data)
-data = (
-    data.assign(_market_cap_num=_market_cap_num)
-        .sort_values('_market_cap_num', ascending=False)
-        .groupby('timestamp', group_keys=False)
-        .head(10)
-        .drop(columns=['_market_cap_num'])
-)
-print(f"One-time cleanup: trimmed {before_rows - len(data)} row(s) outside the top 10 per timestamp.")
-# ───────────────────────────────────────────────────────────────────────────
-
 # Define the dataset ID and table ID
 dataset_id = 'investing'
 table_id = f"crypto_{table_suffix}"
